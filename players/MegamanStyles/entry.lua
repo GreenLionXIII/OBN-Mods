@@ -13,11 +13,11 @@ Styles:
 	Wood Shield
 		Special - Shield
 		ToDo: Charge Shot - Tornado
-		ToDo: Heal on Grass Panals
+		Heal on Grass Panals
 
 	Aqua Bug
 		Charge Shot - Bubbler
-		ToDo: Special - Random Bug (Can only use once per transformation)
+		Random Bug upon Transform
 
 	Heat Guts
 		ToDo: Charge Shot - FlameThrower, Special - GutsBuster
@@ -68,6 +68,9 @@ local BUB_AUDIO = Engine.load_audio(_modpath.."chargedbusters/bubbler/sfx.ogg")
 
 local style_element = "None"
 local counter = 0
+local inflicted_bug = "None"
+local random_number = math.random(1,10)
+
 
 function package_init(package)
     package:declare_package_id("Thor.MegamanStyles")
@@ -81,6 +84,7 @@ function package_init(package)
     package:set_overworld_texture_path(_modpath.."overworld.png")
     package:set_mugshot_texture_path(_modpath.."mug.png")
     package:set_mugshot_animation_path(_modpath.."mug.animation")
+	
 end
 
 function player_init(player)
@@ -103,6 +107,8 @@ function player_init(player)
 	
 	
 	player.update_func = function()
+		random_number = math.random(1,10)
+		local moved = false
 		if (style_element == "Grass" and player:get_tile():get_state() == TileState.Grass) 
 		then
 			counter = counter + 1
@@ -110,6 +116,102 @@ function player_init(player)
 			if (result == 0)
 			then
 				player:set_health(player:get_health() + 1)
+			end
+		end
+		
+		
+		if (inflicted_bug == "None")
+		then
+			--Nothing
+		
+		elseif (inflicted_bug == "HealthDown")
+		then
+			counter = counter + 1
+			local result = counter % 14
+			if (result == 0)
+			then
+				player:set_health(player:get_health() - 1)
+			end
+		
+		elseif (inflicted_bug == "HealthUp")
+		then
+			counter = counter + 1
+			local result = counter % 14
+			if (result == 0)
+			then
+				player:set_health(player:get_health() + 1)
+			end
+		
+		elseif (inflicted_bug == "MovementUp")
+		then
+			counter = counter + 1
+			local result = counter % 30
+			if (result == 0)
+			then
+				target_movement_tile = player:get_tile(Direction.Up,1)
+				moved = player:teleport(target_movement_tile, ActionOrder.Immediate)
+			end
+		
+		elseif (inflicted_bug == "MovementDown")
+		then
+			counter = counter + 1
+			local result = counter % 30
+			if (result == 0)
+			then
+				target_movement_tile = player:get_tile(Direction.Down,1)
+				moved = player:teleport(target_movement_tile, ActionOrder.Immediate)
+			end
+		
+		elseif (inflicted_bug == "MovementLeft")
+		then
+			counter = counter + 1
+			local result = counter % 30
+			if (result == 0)
+			then
+				target_movement_tile = player:get_tile(Direction.Left,1)
+				moved = player:teleport(target_movement_tile, ActionOrder.Immediate)
+			end
+		
+		elseif (inflicted_bug == "MovementRight")
+		then
+			counter = counter + 1
+			local result = counter % 30
+			if (result == 0)
+			then
+				target_movement_tile = player:get_tile(Direction.Right,1)
+				moved = player:teleport(target_movement_tile, ActionOrder.Immediate)
+			end
+			
+		elseif (inflicted_bug == "FullHealth")
+		then
+			player:set_health(1000)
+			inflicted_bug = "None"
+			
+		elseif (inflicted_bug == "SetPoison")
+		then
+			counter = counter + 1
+			local result = counter % 70
+			if (result == 0)
+			then
+				player:get_tile():set_state(TileState.Poison)
+			end
+			
+		elseif (inflicted_bug == "SetHoly")
+		then
+			counter = counter + 1
+			local result = counter % 70
+			if (result == 0)
+			then
+				player:get_tile():set_state(TileState.Holy)
+			end
+			
+		elseif (inflicted_bug == "SetCracked")
+		then
+			counter = counter + 1
+			local result = counter % 70
+			if (result == 0)
+			then
+				player:get_tile():set_state(TileState.Cracked)
 			end
 		end
 	end
@@ -133,6 +235,7 @@ function player_init(player)
 		--player.charged_attack_func = create_special_attack_water
 		player.special_attack_func = create_special_attack_shield_off
 		style_element = "Fire"
+		inflicted_bug = "None"
     end
 
     FireShdw.on_deactivate_func = function(self, player)
@@ -145,6 +248,7 @@ function player_init(player)
 		player.charged_attack_func = create_special_attack_norm
 		player.special_attack_func = create_special_attack_shield_off
 		style_element = "None"
+		inflicted_bug = "None"
     end
 	
 	
@@ -165,6 +269,7 @@ function player_init(player)
 		player.charged_attack_func = create_special_attack_elec
 		player.special_attack_func = create_special_attack_shield_off
 		style_element = "Elec"
+		inflicted_bug = "None"
     end
 
     ElecGrnd.on_deactivate_func = function(self, player)
@@ -177,6 +282,7 @@ function player_init(player)
 		player.charged_attack_func = create_special_attack_norm
 		player.special_attack_func = create_special_attack_shield_off
 		style_element = "None"
+		inflicted_bug = "None"
     end
 	
 	
@@ -197,6 +303,7 @@ function player_init(player)
 		--player.charged_attack_func = create_special_attack_water
 		player.special_attack_func = create_special_attack_shield
 		style_element = "Grass"
+		inflicted_bug = "None"
     end
 
     GrassShield.on_deactivate_func = function(self, player)
@@ -209,6 +316,7 @@ function player_init(player)
 		player.charged_attack_func = create_special_attack_norm
 		player.special_attack_func = create_special_attack_shield_off
 		style_element = "None"
+		inflicted_bug = "None"
     end
 	
 	
@@ -229,7 +337,37 @@ function player_init(player)
 		player.charged_attack_func = create_special_attack_water
 		player.special_attack_func = create_special_attack_shield_off
 		style_element = "Aqua"
-		
+		if (random_number == 1)
+		then
+			inflicted_bug = "HealthDown"
+		elseif (random_number == 2)
+		then
+			inflicted_bug = "HealthUp"
+		elseif (random_number == 3)
+		then
+			inflicted_bug = "MovementUp"
+		elseif (random_number == 4)
+		then
+			inflicted_bug = "MovementDown"
+		elseif (random_number == 5)
+		then
+			inflicted_bug = "MovementLeft"
+		elseif (random_number == 6)
+		then
+			inflicted_bug = "MovementRight"
+		elseif (random_number == 7)
+		then
+			inflicted_bug = "FullHealth"
+		elseif (random_number == 8)
+		then
+			inflicted_bug = "SetPoison"
+		elseif (random_number == 9)
+		then
+			inflicted_bug = "SetHoly"
+		elseif (random_number == 10)
+		then
+			inflicted_bug = "SetCracked"
+		end
     end
 
     WaterBug.on_deactivate_func = function(self, player)
@@ -242,6 +380,7 @@ function player_init(player)
 		player.charged_attack_func = create_special_attack_norm
 		player.special_attack_func = create_special_attack_shield_off
 		style_element = "None"
+		inflicted_bug = "None"
     end
 	
 	
@@ -262,6 +401,7 @@ function player_init(player)
 		player.charged_attack_func = create_special_attack_fire
 		player.special_attack_func = create_special_attack_shield_off
 		style_element = "Fire"
+		inflicted_bug = "None"
     end
 
     FireGuts.on_deactivate_func = function(self, player)
@@ -274,6 +414,7 @@ function player_init(player)
 		player.charged_attack_func = create_special_attack_norm
 		player.special_attack_func = create_special_attack_shield_off
 		style_element = "None"
+		inflicted_bug = "None"
     end
 end
 	
