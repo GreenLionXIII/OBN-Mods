@@ -1,2 +1,2 @@
-# OBN-Mods
-Mods for Open Battle Network
+# ONB-Mods
+Mods for Open Network Battle
