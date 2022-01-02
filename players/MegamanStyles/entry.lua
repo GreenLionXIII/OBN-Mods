@@ -6,13 +6,14 @@ Styles:
 	Heat Shadow
 		ToDo: Charge Shot - Ivis
 
-	Elec Ground
+	Elec Ground - Done
 		Charge Shot - ZapRing
-		ToDo: Crack hit tile, decide on damage
+		Crack hit tile
 
 	Wood Shield
 		Special - Shield
 		ToDo: Charge Shot - Tornado
+		ToDo: Heal on Grass Panals
 
 	Aqua Bug
 		Charge Shot - Bubbler
@@ -64,6 +65,10 @@ local BUB_AUDIO = Engine.load_audio(_modpath.."chargedbusters/bubbler/sfx.ogg")
 
 
 
+
+local style_element = "None"
+local counter = 0
+
 function package_init(package)
     package:declare_package_id("Thor.MegamanStyles")
     package:set_special_description("Megaman with Style Change!")
@@ -97,6 +102,20 @@ function player_init(player)
 	
 	
 	
+	player.update_func = function()
+		if (style_element == "Grass" and player:get_tile():get_state() == TileState.Grass) 
+		then
+			counter = counter + 1
+			local result = counter % 14
+			if (result == 0)
+			then
+				player:set_health(player:get_health() + 1)
+			end
+		end
+	end
+	
+	
+	
 	local FireShdw = player:create_form()
     FireShdw:set_mugshot_texture_path(_modpath.."forms/FireShadow_Entry.png")
 
@@ -113,6 +132,7 @@ function player_init(player)
 		player:set_element(Element.Fire)
 		--player.charged_attack_func = create_special_attack_water
 		player.special_attack_func = create_special_attack_shield_off
+		style_element = "Fire"
     end
 
     FireShdw.on_deactivate_func = function(self, player)
@@ -124,6 +144,7 @@ function player_init(player)
 		player:set_element(Element.None)
 		player.charged_attack_func = create_special_attack_norm
 		player.special_attack_func = create_special_attack_shield_off
+		style_element = "None"
     end
 	
 	
@@ -143,6 +164,7 @@ function player_init(player)
 		player:set_element(Element.Elec)
 		player.charged_attack_func = create_special_attack_elec
 		player.special_attack_func = create_special_attack_shield_off
+		style_element = "Elec"
     end
 
     ElecGrnd.on_deactivate_func = function(self, player)
@@ -154,6 +176,7 @@ function player_init(player)
 		player:set_element(Element.None)
 		player.charged_attack_func = create_special_attack_norm
 		player.special_attack_func = create_special_attack_shield_off
+		style_element = "None"
     end
 	
 	
@@ -173,6 +196,7 @@ function player_init(player)
 		player:set_element(Element.Wood)
 		--player.charged_attack_func = create_special_attack_water
 		player.special_attack_func = create_special_attack_shield
+		style_element = "Grass"
     end
 
     GrassShield.on_deactivate_func = function(self, player)
@@ -184,6 +208,7 @@ function player_init(player)
 		player:set_element(Element.None)
 		player.charged_attack_func = create_special_attack_norm
 		player.special_attack_func = create_special_attack_shield_off
+		style_element = "None"
     end
 	
 	
@@ -203,6 +228,7 @@ function player_init(player)
 		player:set_element(Element.Aqua)
 		player.charged_attack_func = create_special_attack_water
 		player.special_attack_func = create_special_attack_shield_off
+		style_element = "Aqua"
 		
     end
 
@@ -215,6 +241,7 @@ function player_init(player)
 		player:set_element(Element.None)
 		player.charged_attack_func = create_special_attack_norm
 		player.special_attack_func = create_special_attack_shield_off
+		style_element = "None"
     end
 	
 	
@@ -234,6 +261,7 @@ function player_init(player)
 		player:set_element(Element.Fire)
 		player.charged_attack_func = create_special_attack_fire
 		player.special_attack_func = create_special_attack_shield_off
+		style_element = "Fire"
     end
 
     FireGuts.on_deactivate_func = function(self, player)
@@ -245,6 +273,7 @@ function player_init(player)
 		player:set_element(Element.None)
 		player.charged_attack_func = create_special_attack_norm
 		player.special_attack_func = create_special_attack_shield_off
+		style_element = "None"
     end
 end
 	
