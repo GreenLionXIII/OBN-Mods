@@ -1,4 +1,7 @@
 nonce = function() end
+local AUDIO1 = Engine.load_audio(_modpath.."PanelFinalChange.ogg")
+local AUDIO2 = Engine.load_audio(_modpath.."PanalChange.wav")
+
 
 function package_init(package) 
 	package:declare_package_id("Thor.GrassStg")
@@ -13,7 +16,7 @@ function package_init(package)
 	props.element = Element.Wood
 	props.description = "Changes all panls to grass"
 	props.limit = 5
-	--props.card_class = CardClass.Giga
+	props.card_class = CardClass.Standard
 	--props.can_boost = false
 end
 
@@ -42,6 +45,63 @@ function card_create_action(actor, props)
 		local panel63 = user:get_field():tile_at( 6, 3 )
 		
 		
+		local k = 0
+		local cooldown = 0
+		local step1 = Battle.Step.new()
+		step1.update_func = function(self, dt)
+			if cooldown <= 0 then
+				k = k + 1
+				cooldown = 0.05
+				Engine.play_audio(AUDIO2, AudioPriority.Low)
+				if user:get_tile():get_state() == TileState.Grass then
+					panel11:set_state(TileState.Normal)
+					panel12:set_state(TileState.Normal)
+					panel13:set_state(TileState.Normal)
+					panel21:set_state(TileState.Normal)
+					panel22:set_state(TileState.Normal)
+					panel23:set_state(TileState.Normal)
+					panel31:set_state(TileState.Normal)
+					panel32:set_state(TileState.Normal)
+					panel33:set_state(TileState.Normal)
+					panel41:set_state(TileState.Normal)
+					panel42:set_state(TileState.Normal)
+					panel43:set_state(TileState.Normal)
+					panel51:set_state(TileState.Normal)
+					panel52:set_state(TileState.Normal)
+					panel53:set_state(TileState.Normal)
+					panel61:set_state(TileState.Normal)
+					panel62:set_state(TileState.Normal)
+					panel63:set_state(TileState.Normal)
+				else
+					panel11:set_state(TileState.Grass)
+					panel12:set_state(TileState.Grass)
+					panel13:set_state(TileState.Grass)
+					panel21:set_state(TileState.Grass)
+					panel22:set_state(TileState.Grass)
+					panel23:set_state(TileState.Grass)
+					panel31:set_state(TileState.Grass)
+					panel32:set_state(TileState.Grass)
+					panel33:set_state(TileState.Grass)
+					panel41:set_state(TileState.Grass)
+					panel42:set_state(TileState.Grass)
+					panel43:set_state(TileState.Grass)
+					panel51:set_state(TileState.Grass)
+					panel52:set_state(TileState.Grass)
+					panel53:set_state(TileState.Grass)
+					panel61:set_state(TileState.Grass)
+					panel62:set_state(TileState.Grass)
+					panel63:set_state(TileState.Grass)
+				end
+			else
+				cooldown = cooldown - dt
+			end
+			
+			if k == 14 then
+				self:complete_step()
+			end	
+		end
+		self:add_step(step1)		
+		
 		panel11:set_state(TileState.Grass)
 		panel12:set_state(TileState.Grass)
 		panel13:set_state(TileState.Grass)
@@ -60,6 +120,7 @@ function card_create_action(actor, props)
 		panel61:set_state(TileState.Grass)
 		panel62:set_state(TileState.Grass)
 		panel63:set_state(TileState.Grass)
+		Engine.play_audio(AUDIO1, AudioPriority.Low)
 	end
 	return action
 end

@@ -1,4 +1,6 @@
 nonce = function() end
+local AUDIO1 = Engine.load_audio(_modpath.."PanelFinalChange.ogg")
+local AUDIO2 = Engine.load_audio(_modpath.."PanalChange.wav")
 
 function package_init(package) 
 	package:declare_package_id("Thor.LavaStge")
@@ -39,6 +41,63 @@ function card_create_action(actor, props)
 		local panel63 = user:get_field():tile_at( 6, 3 )
 		
 		
+		local k = 0
+		local cooldown = 0
+		local step1 = Battle.Step.new()
+		step1.update_func = function(self, dt)
+			if cooldown <= 0 then
+				k = k + 1
+				cooldown = 0.05
+				Engine.play_audio(AUDIO2, AudioPriority.Low)
+				if user:get_tile():get_state() == TileState.Lava then
+					panel11:set_state(TileState.Normal)
+					panel12:set_state(TileState.Normal)
+					panel13:set_state(TileState.Normal)
+					panel21:set_state(TileState.Normal)
+					panel22:set_state(TileState.Normal)
+					panel23:set_state(TileState.Normal)
+					panel31:set_state(TileState.Normal)
+					panel32:set_state(TileState.Normal)
+					panel33:set_state(TileState.Normal)
+					panel41:set_state(TileState.Normal)
+					panel42:set_state(TileState.Normal)
+					panel43:set_state(TileState.Normal)
+					panel51:set_state(TileState.Normal)
+					panel52:set_state(TileState.Normal)
+					panel53:set_state(TileState.Normal)
+					panel61:set_state(TileState.Normal)
+					panel62:set_state(TileState.Normal)
+					panel63:set_state(TileState.Normal)
+				else
+					panel11:set_state(TileState.Lava)
+					panel12:set_state(TileState.Lava)
+					panel13:set_state(TileState.Lava)
+					panel21:set_state(TileState.Lava)
+					panel22:set_state(TileState.Lava)
+					panel23:set_state(TileState.Lava)
+					panel31:set_state(TileState.Lava)
+					panel32:set_state(TileState.Lava)
+					panel33:set_state(TileState.Lava)
+					panel41:set_state(TileState.Lava)
+					panel42:set_state(TileState.Lava)
+					panel43:set_state(TileState.Lava)
+					panel51:set_state(TileState.Lava)
+					panel52:set_state(TileState.Lava)
+					panel53:set_state(TileState.Lava)
+					panel61:set_state(TileState.Lava)
+					panel62:set_state(TileState.Lava)
+					panel63:set_state(TileState.Lava)
+				end
+			else
+				cooldown = cooldown - dt
+			end
+			
+			if k == 14 then
+				self:complete_step()
+			end	
+		end
+		self:add_step(step1)		
+		
 		panel11:set_state(TileState.Lava)
 		panel12:set_state(TileState.Lava)
 		panel13:set_state(TileState.Lava)
@@ -57,6 +116,7 @@ function card_create_action(actor, props)
 		panel61:set_state(TileState.Lava)
 		panel62:set_state(TileState.Lava)
 		panel63:set_state(TileState.Lava)
+		Engine.play_audio(AUDIO1, AudioPriority.Low)
 	end
 	return action
 end
