@@ -11,11 +11,11 @@ frame duration="0.1" x="24" y="0" w="34" h="40" originx="17" originy="39"
 frame duration="0.1" x="24" y="0" w="34" h="40" originx="17" originy="39"
 
 animation state="MEGAMAN_SHOOT"
-frame duration="0.1" x="58" y="0" w="45" h="38" originx="22" originy="37"
-frame duration="0.2" x="0" y="48" w="46" h="38" originx="23" originy="37"
-frame duration="0.1" x="46" y="48" w="47" h="38" originx="23" originy="37"
-frame duration="0.1" x="0" y="86" w="45" h="38" originx="22" originy="37"
-frame duration="0.1" x="45" y="86" w="45" h="38" originx="22" originy="37"
+frame duration="0.2" x="58" y="0" w="45" h="38" originx="22" originy="37"
+frame duration="0.1" x="0" y="48" w="46" h="38" originx="23" originy="37"
+frame duration="0.05" x="46" y="48" w="47" h="38" originx="23" originy="37"
+frame duration="0.05" x="0" y="86" w="45" h="38" originx="22" originy="37"
+frame duration="0.05" x="45" y="86" w="45" h="38" originx="22" originy="37"
 
 
 animation state="MEGAMAN_DESPAWN"

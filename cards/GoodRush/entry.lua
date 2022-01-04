@@ -5,6 +5,8 @@ nonce = function() end
 
 local BUSTER_SHOT_TEXTURE = Engine.load_texture(_modpath.."Buster_Shot.png")
 local MEGAMAN_TEXTURE = Engine.load_texture(_modpath.."Megaman.png")
+local BUSTER_SFX = Engine.load_audio(_modpath .. "Buster_Shot.ogg")
+local RUSH_SFX = Engine.load_audio(_modpath .. "Rush_Hit.ogg")
 
 local rush_alive = true
 
@@ -57,6 +59,8 @@ function card_create_action(actor, props)
 						local cannonshot = create_rush(user, props)
 						local tile1 = user:get_tile(user:get_facing(), 1)
 						mega_anim:set_state("Megaman_Shoot")
+						--add_anim_action(2, Engine.play_audio(BUSTER_SFX, AudioPriority.Highest))
+						Engine.play_audio(BUSTER_SFX, AudioPriority.Highest)
 						mega_anim:on_complete(function()
 							actor:get_field():spawn(cannonshot, tile1)
 						end)
@@ -143,6 +147,7 @@ function create_rush(user, props)
     end
 	
 	spell.collision_func = function(self, other)
+		Engine.play_audio(RUSH_SFX, AudioPriority.Highest)
 	end
 	
     spell.delete_func = function(self) 
