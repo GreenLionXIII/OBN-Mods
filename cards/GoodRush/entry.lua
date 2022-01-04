@@ -44,6 +44,7 @@ function card_create_action(actor, props)
 		local mega = Battle.Artifact.new()
 		local do_once = true
 		local do_once_again = true
+		local self_variable = self
 		rush_alive = true
 		step1.update_func = function(self, dt)
 				if do_once then
@@ -59,8 +60,10 @@ function card_create_action(actor, props)
 						local cannonshot = create_rush(user, props)
 						local tile1 = user:get_tile(user:get_facing(), 1)
 						mega_anim:set_state("Megaman_Shoot")
-						--add_anim_action(2, Engine.play_audio(BUSTER_SFX, AudioPriority.Highest))
-						Engine.play_audio(BUSTER_SFX, AudioPriority.Highest)
+						self_variable:add_anim_action(2, function()
+							Engine.play_audio(BUSTER_SFX, AudioPriority.Highest)
+						end)
+						--Engine.play_audio(BUSTER_SFX, AudioPriority.Highest)
 						mega_anim:on_complete(function()
 							actor:get_field():spawn(cannonshot, tile1)
 						end)
