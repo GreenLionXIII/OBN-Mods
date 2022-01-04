@@ -4,7 +4,7 @@ local AUDIO2 = Engine.load_audio(_modpath.."PanalChange.wav")
 
 
 function package_init(package) 
-	package:declare_package_id("Thor.GrassStg")
+	package:declare_package_id("com.Thor.card.GrassStg")
 	package:set_icon_texture(Engine.load_texture(_modpath.."icon.png"))
 	package:set_preview_texture(Engine.load_texture(_modpath.."preview.png"))
 	package:set_codes({'E', 'J', 'R', 'W', 'Z', '*'})

@@ -1,5 +1,5 @@
 function package_init(block)
-    block:declare_package_id("Thor.SetGreen")
+    block:declare_package_id("com.Thor.block.SetGreen")
     block:set_name("SetGreen")
 	block:as_program()
     block:set_description("Panels become grass panels.")

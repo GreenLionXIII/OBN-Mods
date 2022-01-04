@@ -1,5 +1,5 @@
 function package_init(block)
-    block:declare_package_id("Thor.SetLava")
+    block:declare_package_id("com.Thor.block.SetLava")
     block:set_name("SetLava")
 	block:as_program()
     block:set_description("Panels become lava panels.")

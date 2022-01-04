@@ -3,7 +3,7 @@ local AUDIO1 = Engine.load_audio(_modpath.."PanelFinalChange.ogg")
 local AUDIO2 = Engine.load_audio(_modpath.."PanalChange.wav")
 
 function package_init(package) 
-	package:declare_package_id("Thor.LavaStge")
+	package:declare_package_id("com.Thor.card.LavaStge")
 	package:set_icon_texture(Engine.load_texture(_modpath.."icon.png"))
 	package:set_preview_texture(Engine.load_texture(_modpath.."preview.png"))
 	package:set_codes({'A', 'E', 'R', 'T', 'Y', '*'})

@@ -73,7 +73,7 @@ local random_number = math.random(1,10)
 
 
 function package_init(package)
-    package:declare_package_id("Thor.MegamanStyles")
+    package:declare_package_id("com.Thor.char.MegamanStyles")
     package:set_special_description("Megaman with Style Change!")
     package:set_speed(1.0)
     package:set_attack(5)
