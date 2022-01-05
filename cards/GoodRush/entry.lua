@@ -109,7 +109,7 @@ function create_rush(user, props)
     spell:set_hit_props(
         HitProps.new(
             props.damage, 
-            Hit.Impact | Hit.Flinch, 
+            Hit.Impact | Hit.Flinch | Hit.Flash, 
             Element.None,
             user:get_context(),
             Drag.None
