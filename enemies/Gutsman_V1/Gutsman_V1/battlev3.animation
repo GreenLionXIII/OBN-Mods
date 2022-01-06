@@ -1,0 +1,49 @@
+imagePath="battle.png"
+
+animation state="IDLE"
+frame duration="0.1" x="107" y="193" w="59" h="52" originx="33" originy="49"
+
+animation state="HIT"
+frame duration="0.1" x="175" y="0" w="49" h="65" originx="16" originy="64"
+
+animation state="SLAM"
+frame duration="0.04" x="166" y="193" w="59" h="52" originx="33" originy="49"
+frame duration="0.04" x="0" y="0" w="54" h="75" originx="28" originy="74"
+frame duration="0.04" x="54" y="0" w="61" h="73" originx="13" originy="72"
+frame duration="0.04" x="115" y="0" w="60" h="70" originx="13" originy="69"
+frame duration="0.04" x="0" y="75" w="58" h="64" originx="10" originy="63"
+frame duration="0.04" x="58" y="75" w="61" h="62" originx="38" originy="61"
+
+
+animation state="SLAM_DELAY"
+frame duration="0.4" x="148" y="246" w="73" h="45" originx="48" originy="40"
+
+animation state="PUNCH"
+frame duration="0.06" x="59" y="246" w="59" h="52" originx="32" originy="49"
+frame duration="0.06" x="116" y="139" w="55" h="53" originx="27" originy="52"
+frame duration="0.06" x="170" y="75" w="64" h="54" originx="21" originy="53"
+frame duration="0.06" x="0" y="139" w="61" h="54" originx="20" originy="53"
+frame duration="0.06" x="61" y="139" w="55" h="54" originx="28" originy="53"
+frame duration="0.06" x="171" y="139" w="81" h="53" originx="51" originy="52"
+frame duration="0.06" x="0" y="193" w="81" h="53" originx="51" originy="52"
+
+animation state="SHOCKWAVE"
+frame duration="0.06" x="166" y="193" w="59" h="52" originx="33" originy="49"
+frame duration="0.06" x="0" y="0" w="54" h="75" originx="28" originy="74"
+frame duration="0.06" x="54" y="0" w="61" h="73" originx="13" originy="72"
+frame duration="0.06" x="115" y="0" w="60" h="70" originx="13" originy="69"
+frame duration="0.06" x="0" y="75" w="58" h="64" originx="10" originy="63"
+frame duration="0.06" x="58" y="75" w="61" h="62" originx="38" originy="61"
+frame duration="0.06" x="148" y="246" w="73" h="45" originx="48" originy="40"
+
+animation state="TELEPORT_OUT"
+frame duration="0.01" x="118" y="246" w="30" h="48" originx="13" originy="52"
+frame duration="0.01" x="81" y="193" w="26" h="53" originx="13" originy="52"
+frame duration="0.01" x="145" y="75" w="25" h="56" originx="13" originy="52"
+frame duration="0.01" x="119" y="75" w="26" h="60" originx="13" originy="52"
+
+animation state="TELEPORT_IN"
+frame duration="0.01" x="119" y="75" w="26" h="60" originx="13" originy="52"
+frame duration="0.01" x="145" y="75" w="25" h="56" originx="13" originy="52"
+frame duration="0.01" x="81" y="193" w="26" h="53" originx="13" originy="52"
+frame duration="0.01" x="118" y="246" w="30" h="48" originx="13" originy="52"
