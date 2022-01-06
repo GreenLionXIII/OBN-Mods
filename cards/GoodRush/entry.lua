@@ -38,6 +38,7 @@ function card_create_action(actor, props)
         print("in custom card action execute_func()!")
 		--user:hide()
 		actor:hide()
+		local sound_effect = false
 		local step1 = Battle.Step.new()
 		local field = user:get_field()
 		local tile = user:get_tile(user:get_facing(), 0)
@@ -61,7 +62,10 @@ function card_create_action(actor, props)
 						local tile1 = user:get_tile(user:get_facing(), 1)
 						mega_anim:set_state("Megaman_Shoot")
 						self_variable:add_anim_action(2, function()
-							Engine.play_audio(BUSTER_SFX, AudioPriority.Highest)
+							if sound_effect == false then
+								Engine.play_audio(BUSTER_SFX, AudioPriority.Highest)
+								sound_effect = true
+							end
 						end)
 						--Engine.play_audio(BUSTER_SFX, AudioPriority.Highest)
 						mega_anim:on_complete(function()
