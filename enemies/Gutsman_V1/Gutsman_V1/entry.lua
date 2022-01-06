@@ -17,11 +17,12 @@ local GUTSMAN_TEXTURE = Engine.load_texture(_modpath .. "battle.png")
 local wave_sfx = Engine.load_audio(_modpath .. "shockwave.ogg")
 local punch_sfx = Engine.load_audio(_modpath .. "punch.ogg")
 local crack_sfx = Engine.load_audio(_modpath .. "crack.ogg")
+local slam_sfx = Engine.load_audio(_modpath .. "slam.ogg")
 local wave_texture = Engine.load_texture(_modpath .. "shockwave.png")
 local fist_texture = Engine.load_texture(_modpath .. "fist.png")
 
 
-
+local cannot_reach_front = false
 local move_counter = 0
 local attack_counter = 0
 local which_attack = 0
@@ -135,9 +136,6 @@ function package_init(self)
 		end
 
 		return not has_character
-
-
-		
 	end
 	
 	
@@ -194,7 +192,7 @@ idle = function(self)
 		self.update_func = function() end
 		
 		local move_or_attack = math.random(1,8)
-		if move_or_attack == 8 or move_counter > 4 then
+		if move_or_attack == 8 or move_counter >= 4 then
 			attack(self)
 		elseif attack_counter > 4 then
 			move_smash(self)
@@ -206,7 +204,6 @@ idle = function(self)
 		
 	end
 end
-
 
 function move(self)
 
@@ -287,20 +284,17 @@ function guts_barrage(self)
 return
 end
 
-
-
-
-
 function attack(self)
 	local anim = self:get_animation()
 	move_counter = 0
-	if which_attack == 3 then
+	if which_attack == 8 then
 		self:toggle_counter(true)
 		attack_counter = 0
 		anim:set_state("SLAM")
 		anim:on_complete(function()
 			self:toggle_counter(false)
 			if self:get_tile(Direction.Left,1):is_walkable() then
+				Engine.play_audio(slam_sfx, AudioPriority.Highest)
 				crack_tiles(self)
 			end
 			which_attack = 0
@@ -316,6 +310,7 @@ function attack(self)
 			anim:set_state("SHOCKWAVE")
 			self:toggle_counter(true)
 			anim:on_complete(function()
+				Engine.play_audio(slam_sfx, AudioPriority.Highest)
 				self:toggle_counter(false)
 				spawn_shockwave(self, self:get_team(), self:get_field(), self:get_tile(Direction.Left, 1), Direction.Left, damage_shockwave, wave_texture, wave_sfx, 5)
 				attack_counter = attack_counter + 1
@@ -344,7 +339,6 @@ function attack(self)
 	
 return
 end
-
 	
 function move_smash(self)
 
@@ -364,7 +358,11 @@ function move_smash(self)
 		
 		anim:set_state("TELEPORT_IN")
 		anim:on_complete(function()
-			which_attack = 3
+			if cannot_reach_front == true then
+				which_attack = 0
+			else
+				which_attack = 8
+			end
 			attack(self)
 		end)
 
@@ -372,96 +370,56 @@ function move_smash(self)
 	return	
 end
 	
-	
-	
-	
-
-
 function find_valid_move_location(self)
+	local target_tile
+	local field = self:get_field()
+
+	local tiles = field:find_tiles(function(tile)
+		if math.random(1,5) == 1 or move_counter >= 4 then
+			return self.can_move_to_func_target_enemy(tile)
+		else
+			return self.can_move_to_func(tile)
+		end
+	end)
   
-  local field = self:get_field()
-
-  local tiles = field:find_tiles(function(tile)
-    if math.random(1,5) == 1 or move_counter == 5 then
-		return self.can_move_to_func_target_enemy(tile)
+	print (#tiles)
+	if #tiles >= 1 then
+		target_tile = tiles[math.random(#tiles)]
 	else
-		return self.can_move_to_func(tile)
+		target_tile = self:get_tile()
 	end
-  end)
-
-  local target_tile = tiles[math.random(#tiles)]
-  local start_tile = self:get_tile()
-
-  if #tiles > 1 then
-    while target_tile == start_tile do
-      -- pick another, don't try to jump on the same tile if it's not necessary
-      target_tile = tiles[math.random(#tiles)]
-    end
-  end
-
+	
+	local start_tile = self:get_tile()
+	if #tiles > 1 then
+		while target_tile == start_tile do
+		-- pick another, don't try to jump on the same tile if it's not necessary
+		target_tile = tiles[math.random(#tiles)]
+		end
+	end
+  
   return target_tile
 end
-
 
 function find_valid_move_location_front_row(self)
-  local field = self:get_field()
-
-  local tiles = field:find_tiles(function(tile)
-    return self.can_move_to_func_front_row(tile)
-  end)
-
-  local target_tile = tiles[math.random(#tiles)]
-  local start_tile = self:get_tile()
-
-  if #tiles > 1 then
-    while target_tile == start_tile do
-      -- pick another, don't try to jump on the same tile if it's not necessary
-      target_tile = tiles[math.random(#tiles)]
-    end
-  end
+	local target_tile
+	cannot_reach_front = false
+	local field = self:get_field()
+	
+	local tiles = field:find_tiles(function(tile)
+		return self.can_move_to_func_front_row(tile)
+	end)
+	
+	if #tiles >= 1 then
+		target_tile = tiles[math.random(#tiles)]
+	else
+		target_tile = self:get_tile()
+		cannot_reach_front = true
+		which_attack = 0
+		attack_counter = 0
+	end
 
   return target_tile
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function find_target(self)
     local field = self:get_field()
@@ -477,7 +435,6 @@ function find_target(self)
     return target_character
 end
 
-
 function spawn_shockwave(owner, team, field, tile, direction,damage, wave_texture, wave_sfx,frame_time)
     local spawn_next
     spawn_next = function()
@@ -488,7 +445,7 @@ function spawn_shockwave(owner, team, field, tile, direction,damage, wave_textur
         local spell = Battle.Spell.new(team)
         spell:set_facing(direction)
         spell:highlight_tile(Highlight.Solid)
-        spell:set_hit_props(HitProps.new(damage, Hit.Impact|Hit.Flash, Element.None, owner:get_context() , Drag.None))
+        spell:set_hit_props(HitProps.new(damage, Hit.Impact | Hit.Flinch | Hit.Flash, Element.None, owner:get_context() , Drag.None))
 
         local sprite = spell:sprite()
         sprite:set_texture(wave_texture)
@@ -527,20 +484,20 @@ function spawn_fist(user)
 		spell:set_hit_props(
 			HitProps.new(
 				damage_guts_barrage, 
-				Hit.Impact | Hit.Flinch | Hit.Flash, 
+				Hit.Impact | Hit.Drag | Hit.Flash | Hit.Shake | Hit.Flinch, 
 				Element.None,
 				user:get_context(),
-				Drag.None
+				Drag.new(Direction.Left,6)
 			)
 		)
 	else
 		spell:set_hit_props(
 			HitProps.new(
 				damage_fist, 
-				Hit.Impact | Hit.Flinch | Hit.Flash, 
+				Hit.Impact | Hit.Drag | Hit.Flash | Hit.Shake | Hit.Flinch, 
 				Element.None,
 				user:get_context(),
-				Drag.None
+				Drag.new(Direction.Left,6)
 			)
 		)
 	end
@@ -616,7 +573,6 @@ function crack_tiles(self)
 	end
 	return
 end
-
 
 function create_hit(user, props)
 	local spell = Battle.Spell.new(user:get_team())

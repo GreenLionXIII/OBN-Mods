@@ -8,7 +8,7 @@ end
 function package_init(package)
   package:declare_package_id(package_id)
   package:set_name("GutsMan V2")
-  package:set_description("BN3 Gutsman V2 (Alpha) Battle!")
+  package:set_description("BN3 GutsMan V2 (Alpha) Battle!")
   package:set_speed(2)
   package:set_attack(60)
   package:set_health(700)
