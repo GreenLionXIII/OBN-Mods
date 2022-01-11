@@ -1,0 +1,4 @@
+imagePath="fist.png"
+
+animation state="FIST"
+frame duration="10.0" x="0" y="0" w="42" h="42" originx="21" originy="41" flipx="1"
